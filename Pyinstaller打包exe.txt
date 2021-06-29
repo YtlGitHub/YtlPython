@@ -1,0 +1,48 @@
+
+
+----要在当前文件路径下打包：----
+
+
+Pyinstaller -F setup.py 打包exe
+
+Pyinstaller -F -w setup.py 不带控制台的打包
+
+Pyinstaller -F -i xx.ico setup.py 打包指定exe图标打包
+
+平常我们只需要这三个就好了，足够满足所有需求了。
+
+python3 pyinstaller打包生成exe程序 图标不改变
+命令代码
+-i 图标路径
+–icon=图标路径
+-F 打包成一个exe文件
+-w 使用窗口，无控制台
+-c 使用控制台，无窗口
+-D 创建一个目录，里面包含exe以及其他一些依赖性文件
+pyinstaller -h 来查看参数
+
+pyinstaller -F -i E:\xinge\img\logo.ico login.py -w
+
+两种图片生成方式
+pyinstaller -F -w -i E:\xinge\img\logo.ico login.py
+
+pyinstaller -F -w --icon=“E:\xinge\img\logo.ico” login.py
+
+生成结果1
+
+
+生成结果2
+logo.exe 为原python图标
+
+
+原因
+因为windows资源管理器对图标有缓存问题！！！ 【缓存问题引起】
+
+解决方法
+1、将打包的exe文件复制到另外的一个地方，有时重启explorer.exe进程也可以修复。
+2、更改文件查看方式即 调整为大图标、中图标、小图标等，explorer.exe进程会更新缓存，【注：单纯刷新不解决问题！】
+
+
+3、添加参数 –onefile
+4、网上一般搜到的解决方案，使用图标制作器制作多个分辨率的图标（常见的有5个 256256 128128 4848 3232 16*16，随操作系统的不同而不同），推荐使用Greenfish Icon Editor Pro，或者设置较麻烦的png2ico。有人提到图标制作需要设置顺序！
+———————————————
