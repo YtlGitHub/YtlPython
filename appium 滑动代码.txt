@@ -1,0 +1,64 @@
+﻿#coding:utf-8
+from appium import webdriver
+import time
+ 
+desired_caps = {
+    'platformName': 'android',
+    'deviceName': '740dc3d1',
+    'platformVersion': '8.0.0',
+    'appPackage': 'com.mld.LanTin',
+    'appActivity': 'com.mld.LanTin.main.activity.SplashActivity',
+    'unicodeKeyboard': True,
+    'resetKeyboard': True
+}
+driver = webdriver.Remote(r'http://127.0.0.1:4723/wd/hub', desired_caps)
+ 
+#向上滑动
+def swipe_up(driver,t=500,n= 1):
+    s = driver.get_window_size()
+    x1 = s['width'] * 0.5  # x坐标
+    y1 = s['height'] * 0.75 # 起点y坐标
+    y2 = s['height'] * 0.25 # 终点y坐标
+    for i in range(n):
+        driver.swipe(x1,y1,x1,y2,t)
+ 
+#向下滑动
+def swipe_down(driver,t=500,n=1):
+    s = driver.get_window_size()
+    x1 = s['width'] * 0.5  # x坐标
+    y1 = s['height'] * 0.25 # 起点y坐标
+    y2 = s['height'] * 0.75 # 终点y坐标
+    for i in range(n):
+        driver.swipe(x1,y1,x1,y2,t)
+ 
+#向左滑动
+def swipe_left(driver, t=500, n=1):
+    s = driver.get_window_size()
+    x1 = s['width'] * 0.75
+    y1 = s['height'] * 0.5
+    x2 = s['width'] * 0.25
+    for i in range(n):
+        driver.swipe(x1, y1, x2, y1, t)
+ 
+#向右
+def swipe_right(driver, t=500, n=1):
+    l = driver.get_window_size()
+    x1 = l['width'] * 0.25
+    y1 = l['height'] * 0.5
+    x2 = l['width'] * 0.75
+    for i in range(n):
+        driver.swipe(x1, y1, x2, y1, t)
+ 
+if __name__=='__main__':
+    print(driver.get_window_size()) #打印一下尺寸
+    time.sleep(3)
+    # 向左滑动一次
+    swipe_left(driver)
+    time.sleep(2)
+    # 向左滑动一次
+    swipe_left(driver)
+    time.sleep(3)
+    # 向左滑动一次
+    swipe_left(driver)
+    time.sleep(10)
+
