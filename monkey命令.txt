@@ -3,14 +3,20 @@
 	adb shell monkey -p com.heytap.browser -v --throttle 3000 100 
 	adb shell monkey -p com.heytap.browser -s 1625189624643 -v --throttle 3000 100
 	adb shell monkey -p com.heytap.browser --ignore-crashes -s 1625189624643 -v --throttle 3000 100
+	adb shell monkey -p com.heytap.browser --ignore-timeouts -s 1625189624643 -v --throttle 3000 100
 	说明：
 		* 1000表示点击次数
 		* -v表示输出的Log级别-v最低0级 -v -v -v 最高2级
 		* -p com.heytap.browser 表示指定包名
 		* --throttle 3000 1000  表示每个事件的间隔是3000毫秒，总共100个事件
-		* 其它高级的命令，可以通过adb shell monkey -h进行查看
 		* -s 1625189624643 表示复现随机点击事件
 		* --ignore-crashes 表示忽略崩溃 
 			注意(如果用此参数忽略了崩溃，在发生崩溃的时候，会继续执行，表现是又重新开始执行 Monkey 命令了，
 			而同时，用-s设定的 seed 值将不会生效。）
+		* --ignore-timeouts  表示忽略ANR
+			ANR 是 Android 的一个错误，在页面无法响应事件的时候会报出来。一般遇到这样的情况，表示当前有耗
+			时操作在 UI 线程中执行，导致 UI 卡顿了，此时就会弹出那个经典的 ANR 弹窗。在 Monkey 中，如果遇
+			上 ANR，同样会停止继续执行。如果想要忽略 ANR ，让其触发的之后依然执行下去，可以使用—ignore-timeouts参数。
 		* 
+		
+* 其它高级的命令，可以通过adb shell monkey -h进行查看
