@@ -1,0 +1,3 @@
+
+adb shell ime set com.android.adbkeyboard/.AdbIME
+adb shell am broadcast -a ADB_INPUT_TEXT --es msg '中国'
