@@ -1,0 +1,166 @@
+adb：Android 调试桥接 Android Debug Bridge，
+是一个 C/S 架构的命令行工具
+
+adb -s 运行在指定的设备中
+adb -s SOBQCATSS8EAV4RS shell
+
+adb help列出adb帮助文件
+
+adb version列出adb版本号
+
+获取设备列表及设备状态
+adb devices列出所有已连接的设备，
+有三种状态device/offline/device not found
+
+adb wait-for-device等待设备连接，
+adb get-state获取adb服务状态，
+offline | bootloader | device
+
+adb push本地文件复制到 Android 设备
+adb pull将 Android 设备上的文件或者文件夹复制到本地
+
+adb install安装应用
+-r 覆盖安装
+-s 安装应用在SD卡上
+adb uninstall
+-k 保留数据和缓存目录
+
+启动adb服务adb start-server，结束adb服务adb kill-server
+一般出现连接异常，一般在连接出现异常，使用 adb devices 未正常列出设备， 设备状态异常时使用 kill-server，然后运行 start-server 进行重启服务
+
+运行在 Android 设备上的 adb 后台进程
+adb shell ps | grep adbd
+adb使用的端口号5037
+
+adb root以root权限重启adb服务
+adb remount将system分区重新挂载为可读写分区
+
+adb reboot重启Android设备
+-bootloader重启设备，进入fastboot模式，
+-recovery重启设备，进入recovery模式
+
+adb logcat 打印 Android 的系统日志
+adb bugreport 打印dumpsys、dumpstate、logcat的输出
+adb bugreport >d:\bugreport.log
+adb shell dumpsys dropbox 缓冲区日志
+
+无线adb连接Android设备
+adb shell getprop dhcp.wlan0.ipaddress
+adb tcpip 8696
+adb connect 18.8.15.102:8696（此步骤要断开ADB）
+
+am命令
+adb shell am start -n 启动一个Activity
+adb shell am start -S 先停止目标应用，再启动
+adb shell am start -W 等待应用完成启动
+adb shell am start -W -n 二次启动时间
+adb shell am start -S -W -n 首次启动时间
+adb shell am start -a android.intent.action.VIEW -d http://testerhome.com 启动默认浏览器打开一个网页
+adb shell am start -a android.intent.action.CALL -d tel:10086启动拨号器拨打 10086
+am startservice 启动一个服务
+am broadcast 发送一个广播
+adb shell am monitor查看当前进程
+adb shell am broadcast -a android.intent.action.MASTER_CLEAR恢复出厂设置
+adb shell am force-stop com.android.mms 强制关闭应用，不过进程的话估计要kill掉id才行
+
+pm命令
+adb shell pm获取安装包信息
+adb shell pm list package 列出所有的应用的包名
+adb shell pm list packages -s 列出系统应用
+adb shell pm list packages -3 列出第三方应用
+adb shell pm list packages -f 列出应用包名及对应的apk名及存放位置
+adb shell pm list package -i 列出应用包名及其安装来源
+"adb shell pm list package -f -3 -i
+zhihu" 后跟过滤关键字，查找三方应用中 知乎的包名、apk存放位置、安装来源
+
+模拟设备输入
+adb shell input设备输入
+adb shell input text 发送文本内容，前提先将键盘设置为英文键盘
+adb shell input keyevent KEYCODE_HOME 发送按键事件
+adb shell input tap （x,y） 对屏幕发送一个触摸事件
+adb shell input swipe 滑动事件
+adb shell input swipe x1 y1 x1 y1 duration(ms) 模拟长按
+
+截图和录制
+adb shell screencap -p /sdcard/screen.png 截图命令
+adb shell screenrecord sdcard/record.mp4 录制命令
+
+列出设备上的输入法
+adb shell ime list -s
+adb shell ime set com.baidu.input_mi/.ImeService 选择输入法
+
+查看后台各类服务
+adb shell service list
+场景：应用管理权限失效时可以通过此命令查看lbe相关权限服务是否运行起来
+通过adb shell service list查询到运行的system service后，
+在adb shell dumpsys后面加上service的名字，
+可以查看指定的service信息。
+battery、cpuinfo、gfxinfo、meminfo、activity
+adb shell dumpsys获取系统各项服务的信息
+
+获取按键信息
+adb shell getevent
+
+获取进程名和Activity
+adb shell dumpsys activity top | grep ACTIVITY
+adb shell dumpsys window w | findstr / | findstr name=
+
+查看进程信息
+adb shell ps
+adb shell ps -x <pid>查看指定进程的状态
+
+获取Android系统属性值
+adb shell getprop
+
+获取设备硬件信息
+adb shell wm size获取设备分辨率
+adb shell wm density屏幕密度比
+adb shell dumpsys display | grep PhysicalDisplayInfo获取设备分辨率
+adb shell cat /sys/class/net/wlan0/address获取WiFi Mac地址
+adb shell cat /proc/cpuinfo获取CPU序列号
+adb shell cat /system/build.prop获取设备编译属性
+adb shell cat /data/misc/wifi/*.conf获取WiFi配置信息
+
+自动化测试相关命令
+adb shell uiautomator//执行uiautomator脚本
+
+adb shell monkey//执行monkey命令
+在 PC 端执行 monkey 命令，将信息保存至 D 盘 monkey.log
+adb shell monkey -p com.android.settings 5000 > d:\monkey.log
+在 PC 端执行 monkey 命令，将信息保存至手机的 Sdcard
+adb shell "monkey -p com.android.settings 5000 > sdcard/monkey.log"
+标准流与错误流分开保存
+adb shell monkey -p com.android.settings 5000 1> d:\monkey.log 2> d:error.log
+
+Android性能相关命令
+启动速度
+adb shell am start -S -W -n 首次启动时间
+adb shell am start -W -n 二次启动时间
+activity之间切换响应时间
+adb logcat | grep Displayed
+
+内存（PSS）
+adb shell dumpsys meminfo
+adb shell procrank
+
+CPU
+adb shell dumpsys cpuinfo
+adb shell top
+adb shell top -h显示帮助文档
+
+FPS
+adb shell dumpsys gfxinfo
+设置>开发者选项>开启GPU呈现模式分析
+
+温度和电量
+adb shell dumpsys battery
+adb shell am broadcast -a android.intent.action.BATTERY_CHANGED --ei "level" 3 --ei "scale" 100模拟手机低电环境
+
+流量
+adb shell cat /proc/uid_stat/uid/tcp_rcv获取应用起始接收的流量
+adb shell cat /proc/uid_stat/uid/tcp_snd获取应用起始发送的流量
+
+作者：LLd_
+链接：https://www.jianshu.com/p/14d9183c4ca6
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
