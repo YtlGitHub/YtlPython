@@ -1,7 +1,14 @@
-db shell monkey -v 1000  
-adb shell monkey -p com.heytap.browser -v --throttle 3000 1000  
-说明：
-	* 1000表示点击次数
-	* -v表示输出的Log级别-v最低0级 -v -v -v 最高2级
-	* -p com.heytap.browser 表示指定包名
-	* --throttle 3000 1000  表示每个事件的间隔是3000毫秒，总共1000个事件
+常用命令：
+	db shell monkey -v 1000  
+	adb shell monkey -p com.heytap.browser -v --throttle 3000 100 
+	adb shell monkey -p com.heytap.browser -s 1625189624643 -v --throttle 3000 100
+	adb shell monkey -p com.heytap.browser --ignore-crashes -s 1625189624643 -v --throttle 3000 100
+	说明：
+		* 1000表示点击次数
+		* -v表示输出的Log级别-v最低0级 -v -v -v 最高2级
+		* -p com.heytap.browser 表示指定包名
+		* --throttle 3000 1000  表示每个事件的间隔是3000毫秒，总共100个事件
+		* 其它高级的命令，可以通过adb shell monkey -h进行查看
+		* -s 1625189624643 表示复现随机点击事件
+		* --ignore-crashes 表示忽略崩溃
+		* 
