@@ -1,2 +1,1 @@
-# YtlPython
-杨天龙的python
+杨天龙的python学习资料
