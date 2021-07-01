@@ -4,6 +4,7 @@
 	adb shell monkey -p com.heytap.browser -s 1625189624643 -v --throttle 3000 100
 	adb shell monkey -p com.heytap.browser --ignore-crashes -s 1625189624643 -v --throttle 3000 100
 	adb shell monkey -p com.heytap.browser --ignore-timeouts -s 1625189624643 -v --throttle 3000 100
+	adb shell monkey -p com.heytap.browser --ignore-timeouts  --pct-touch 50 -s 1625189624643 -v --throttle 3000 100
 	说明：
 		* 1000表示点击次数
 		* -v表示输出的Log级别-v最低0级 -v -v -v 最高2级
@@ -17,6 +18,18 @@
 			ANR 是 Android 的一个错误，在页面无法响应事件的时候会报出来。一般遇到这样的情况，表示当前有耗
 			时操作在 UI 线程中执行，导致 UI 卡顿了，此时就会弹出那个经典的 ANR 弹窗。在 Monkey 中，如果遇
 			上 ANR，同样会停止继续执行。如果想要忽略 ANR ，让其触发的之后依然执行下去，可以使用—ignore-timeouts参数。
-		* 
+			同样它也会导致-s失效。
+		* --pct-touch 10  指定触摸事件的百分比
+		* --pct-motion 20  指定滑动事件的百分比
+		* --pct-trackbal 30  指定轨迹球事件的百分比
+		* --pct-nav 40  指定导航事件中，up、down、left、right 等事件的百分比
+		* --pct-majornav 50  指定导航事件中，back、menu 等事件的百分比
+		* --pct-syskeys 60   指定系统按键的百分比，包括 HOME、Back、音量等
+        * --pct-appswitch 70   指定 Activity 之间切换的比例
+		* --pct-anyeven 80  指定任意事件的百分比
+			默认情况下，如果不设置，会是--pct-anyevent为百分之百，也就是纯随机事件。如果通过其他的参数配置了
+			之后，如果相加的百分比不为百分百，余下的百分比部分也会生成随机事件(-pct-anyevent <percent>)。
+		* -v 1000 > d:/monket_log.txt  # 表示把log保持到D盘
+			
 		
 * 其它高级的命令，可以通过adb shell monkey -h进行查看
