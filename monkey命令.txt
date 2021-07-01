@@ -32,4 +32,4 @@
 		* -v 1000 > d:/monket_log.txt  # 表示把log保持到D盘
 			
 		
-* 其它高级的命令，可以通过adb shell monkey -h进行查看
+其它高级的命令，可以通过adb shell monkey -h进行查看
